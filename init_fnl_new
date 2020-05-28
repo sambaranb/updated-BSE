@@ -1,0 +1,81 @@
+#!/bin/bash
+#############
+M=5.0
+Z=0.002
+TMAX=13700.0
+i=0
+idum=111
+#############
+PTS1=0.001
+PTS2=0.01
+PTS3=0.02
+#############
+SIGMA=265.0
+BHFLAG=2
+NSFLAG=3
+MXNS=2.5
+PSFLAG=0
+KMECH=1
+ECFLAG=1
+### Log file ###
+if [ -e 'SSE.LOG' ]
+then
+rm SSE.LOG
+fi
+
+if [ -e 'evolve.dat' ]
+then
+rm evolve.dat
+fi
+
+if [ -e 'evolve.in' ]
+then
+rm evolve.in
+fi
+
+if [ -e 'fort.99' ]
+then
+rm fort.99
+fi
+
+#############
+echo "#Z = $Z"
+echo "#PTS1 = $PTS1"
+echo "#PTS2 = $PTS2"
+echo "#PTS3 = $PTS3"
+echo "#NSFLAG = $NSFLAG"
+echo "#PSFLAG = $PSFLAG"
+echo "#ECFLAG = $ECFLAG"
+echo "#MXNS = $MXNS"
+#############
+echo "#KMECH = $KMECH" >> SSE.LOG
+echo "#BHFLAG = $BHFLAG" >> SSE.LOG
+echo "#SIGMA = $SIGMA" >> SSE.LOG
+#############
+
+while [ $i -le 700 ]
+#while [ $i -le 430 ]
+#while [ $i -le 0 ]
+do
+M=`echo $M+0.5 | bc`
+#echo "Mass = $M   Met = $Z" >&2
+### Input file ###
+echo "$M $Z $TMAX" > evolve.in
+echo "0.5 0.0 1.0 $SIGMA" >> evolve.in
+echo "0 1 $BHFLAG $NSFLAG $MXNS $idum" >> evolve.in
+echo "$PSFLAG $KMECH $ECFLAG" >> evolve.in
+echo "$PTS1 $PTS2 $PTS3" >> evolve.in
+### SSE ###
+/Users/sambaran/BSE2.new/BSE/sse_new < evolve.in >> SSE.LOG
+echo "######" >> SSE.LOG
+### Remnant mass ###
+TYPE=`tail -1 evolve.dat | awk '{print $2}'`
+MREM=`tail -1 evolve.dat | awk '{print $4}'`
+echo "$M   $MREM   $TYPE"
+###
+i=`echo $i+1 | bc`
+idum=`echo $idum+1 | bc`
+rm -f evolve.dat
+done
+head -3 SSE.LOG > reminfo
+cat SSE.LOG | grep "fallback control" >> reminfo
