@@ -7,10 +7,26 @@ Further bug fix of 'mlwind.f' by Sambaran Banerjee on 3 June 2019 (fix of the
 
 Sambaran Banerjee, University of Bonn, Germany
 sambaran@astro.uni-bonn.de
-sambaran.banerjee@gmail.com
+sambaran.banerjee@gmail.com 
 
-**Make sure to insert the right gfortran command, as appropriate for your computer,
-in the Makefile before compiling. Currently, 'gfortran-mp-9' is set for the latest MacOS.**
+Reference paper: S. Banerjee, K. Belczynski, C. L. Fryer, et al. 2020, Astronomy and Astrophysics, 639, A41
+https://ui.adsabs.harvard.edu/abs/2020A%26A...639A..41B/abstract
+
+***Make sure to insert the right gfortran command, as appropriate for your computer,
+in the Makefile before compiling. Currently, 'gfortran-mp-9' is set for the latest MacOS.***
+
+Information: in this standalone version of SSE/BSE, the input parameters
+neta, bwind, and hewind (see below) are dummy and are kept to preserve
+the input format of the original SSE/BSE (as available in: http://astronomy.swin.edu.au/~jhurley/).
+The values of the wind parameters neta and bwind are hard set in 'mlwind.f' (hewind not used in 'mlwind.f').
+neta, bwind, and hewind are borne by the same Common Block, VALUE1, as in the original version.
+Since VALUE1 also contains mxns, the maximum mass of a neutron star and which parameter
+is required in 'hrdiag.f', VALUE1 Common Block is referenced in 'hrdiag.f'. 
+'hrdiag.f' uses neta for a different purpose and the variable is simply overwritten in this
+subroutine before it is used as an argument; the overwritten value is not
+reused in 'mlwind.f' since neta is hard-coded in the latter subroutine. Hence,
+under this current arrangement, there should not be any conflict regarding the use of the
+variable neta in 'hrdiag.f'. (bwind and hewind are not used in 'hrdiag.f'.)
 ---------------------------------------------------
 
 New ingredients have been added to make SSE/BSE at par with
@@ -150,8 +166,9 @@ upon request. This version of NBODY6/7 is still under development and testing
 and will be made public in due course.
 
 Feel free to use it for your work. You can also adopt individual subroutines in your own
-programs. In either case, please acknowledge Sambaran Banerjee, especially
-if you use the 'mlwind.f', 'kick.f', or 'hrdiag.f' or adopt parts of these.
+programs. In either case, please appropriately acknowledge the work
+S. Banerjee, K. Belczynski, C. L. Fryer, et al. 2020, Astronomy and Astrophysics, 639, A41,
+especially, if you use the 'mlwind.f', 'kick.f', or 'hrdiag.f' or adopt parts of these.
 
 Please report any bugs. Your suggestions are most welcome. 
 
