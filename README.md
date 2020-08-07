@@ -1,2 +1,2 @@
 # updated-BSE
-The updated BSE code as described in the paper "BSE versus StarTrack: implementations of new wind, remnant-formation, and natal-kick schemes in NBODY7 and their astrophysical consequences" by S. Banerjee et al. (arXiv:1902.07718)
+The updated BSE code as described in the paper "BSE versus StarTrack: implementations of new wind, remnant-formation, and natal-kick schemes in NBODY7 and their astrophysical consequences" by S. Banerjee, K. Belczynski, C. L. Fryer, et al. 2020, Astronomy and Astrophysics, 639, A41 (https://doi.org/10.1051/0004-6361/201935332 ; arXiv:1902.07718). Make sure to read the documentation file 'README_NEW' before using. Further details are available in the above paper.
